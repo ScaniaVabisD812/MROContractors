@@ -21,30 +21,29 @@
 
     $pdo = new PDO("mysql:host=$DBServer;dbname=$DBName", $DBUsername, $DBPassword);
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_SERVER["REQUEST_METHOD"] == "GET") {
         
-        if(isset($_POST["articleID"]))
+        if(isset($_GET["articleID"]))
         {
-            if($_POST["articleID"] != "")
+            if($_GET["articleID"] != "")
             {
-                $querystring = "UPDATE Articles SET Status = 1 WHERE ArticleID = :articleID;";
+                $querystring = "UPDATE Articles SET Status = 2 WHERE ArticleID = :articleID;";
                 $stmt = $pdo->prepare($querystring);
-                $stmt->bindParam(":articleID", $_POST["articleID"]);
+                $stmt->bindParam(":articleID", $_GET["articleID"]);
                 
                 try{
                     $stmt->execute();
-                    $success = "Artikeln har nekats!";
+                    $success = "Artikeln har godkänts!";
                 }
                 catch(PDOException $e)
                 {
-                    $errors = "Något gick fel...";
+                    $errors = "Något gick fel... A";
                 }
                 
-                $querystring = "INSERT INTO ArticleStatusChanges (ArticleID, NewStatus, POT, Message, UserID) VALUES (:articleID, '1', :pot, :message, :userID);";
+                $querystring = "INSERT INTO ArticleStatusChanges (ArticleID, NewStatus, POT, UserID) VALUES (:articleID, '2', :pot, :userID);";
                 $stmt = $pdo->prepare($querystring);
-                $stmt->bindParam(":articleID", $_POST["articleID"]);
+                $stmt->bindParam(":articleID", $_GET["articleID"]);
                 $stmt->bindParam(":pot", date("Y-m-d"));
-                $stmt->bindParam(":message", $_POST["message"]);
                 $stmt->bindParam(":userID", $_SESSION["userID"]);
 
                 try{
@@ -56,7 +55,6 @@
                 }
             }
         }
-
         else
         {
             $errors = "Du måste välja en artikel!";
@@ -64,12 +62,10 @@
     }
     else
     {
-        $errors = "Något gick fel...";
+        $errors = "Något gick fel... B";
     }
-    if($errors != "")
-    {
-        header("Location: ../assess.php?success=" . $success . "&error=" . $errors);
-        die();
-    }
+    $success = str_replace(array("\r", "\n"), '', $success);
+    $errors = str_replace(array("\r", "\n"), '', $errors);
     header("Location: ../assess.php?success=" . $success . "&error=" . $errors);
+    die();
 ?>

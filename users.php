@@ -85,8 +85,8 @@
                 <form method="GET" action="">
                     <label for="name">Namn</label>
                     <input type="text" name="name" id="name" placeholder="Ex. Magnus Karlsson">
-                    <label for="userName">Användarnamn</label>
-                    <input type="text" name="password" id="password" placeholder="Lösenord">
+                    <label for="username">Användarnamn</label>
+                    <input type="text" name="username" id="username" placeholder="Användarnamn">
                     <label for="association"></label>
                     <?php
                         $pdo = new PDO("mysql:host=$DBServer;dbname=$DBName", $DBUsername, $DBPassword);
