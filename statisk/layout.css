@@ -1,0 +1,8 @@
+.GridContainer {
+	display: grid;
+	grid-template-areas:
+		"nav header"
+		"nav main"
+		"footer footer";
+  grid-template-columns: 12em 1fr;
+}

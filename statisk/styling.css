@@ -1,0 +1,313 @@
+@font-face {
+	font-family: "Material Symbols Outlined";
+	font-style: normal;
+	src: url(material-symbols.woff2) format("woff2");
+}
+
+.material-symbols-filled {
+	font-family: "Material Symbols Outlined";
+	font-weight: normal;
+	font-style: normal;
+	font-size: 30px;
+	display: inline-block;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+	font-variation-settings: "FILL" 0, "WGHT" 900;
+}
+
+body{
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+
+  margin: 0;
+	padding: 0;
+}
+
+main{
+  background-color: #EDF9FF;
+  z-index: 0;
+  min-height: 100vh;
+  padding: 3em;
+  grid-area: main;
+}
+
+table{
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+}
+
+th{
+  background-color: #f9f9f9;
+  padding: 0.5em;
+  border: 1px solid lightgray;
+}
+
+td{
+  padding: 0.5em;
+  border: 1px solid lightgray;
+}
+
+.denyButton{
+  color: red;
+  text-align: center;
+}
+
+.approveButton{
+  color: green;
+  text-align: center;
+}
+
+.equalWidthCell{
+  width: 50%;
+}
+
+tr:nth-child(even){
+  background-color: #f9f9f9;
+}
+
+tr:nth-child(odd){
+  background-color: #f0f0f0;
+}
+
+.greenRole{
+  background-color: rgba(52, 240, 52, 0.527);
+}
+
+.redRole{
+  background-color: rgba(255, 107, 107, 0.664);
+}
+
+.materialButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.materialButton a{
+  text-decoration: none;
+  color: black;
+}
+
+div.container{
+  background-color: white;
+  padding: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 1em;
+  border: 2px solid lightgray;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+div.loginContainer{
+  background-color: white;
+  padding: 1em;
+  width: 40%;
+  box-sizing: border-box;
+  border-radius: 1em;
+  border: 2px solid lightgray;
+  margin-top: 3em;
+  margin-bottom: 3em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.errorContainer{
+  background-color: #ffcccb;
+  padding: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 1em;
+  border: 2px solid red;
+  margin-bottom: 1em;
+  font-weight: bold;
+}
+
+.successContainer{
+  background-color: #90EE90;
+  padding: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 1em;
+  border: 2px solid green;
+  margin-bottom: 1em;
+  font-weight: bold;
+}
+
+.imageContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.imageContainer img {
+  height: 300px;
+  margin: 10px;
+  object-fit: cover;
+}
+
+form{
+  margin-top: 1em;
+}
+
+label{
+  display: block;
+  font-weight: 800;
+}
+
+.checkboxLabel{
+  display: inline;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="number"]
+{
+  width: 100%;
+  padding: 0.7em;
+  margin: 0.5em 0;
+  background-color: #f9f9f9;
+  border: 2px solid lightgray;
+  border-radius: 0.5em;
+  box-sizing: border-box;
+  font-size: 1.2em;
+}
+
+input[type="file"]
+{
+  width: 100%;
+  padding: 0.7em;
+  margin: 0.5em 0;
+  background-color: #f9f9f9;
+  border: 2px solid lightgray;
+  border-radius: 0.5em;
+  box-sizing: border-box;
+  font-size: 1.2em;
+  font-family: "Raleway", sans-serif;
+  margin-bottom: 2em;
+}
+
+select{
+  width: 100%;
+  padding: 0.7em;
+  margin: 0.5em 0;
+  background-color: #f9f9f9;
+  border: 2px solid lightgray;
+  border-radius: 0.5em;
+  box-sizing: border-box;
+  font-size: 1.2em;
+}
+
+button[type="submit"]
+{
+  width: 100%;
+  padding: 0.7em;
+  margin: 0.5em 0;
+  background-color: #f9f9f9;
+  border: 2px solid lightgray;
+  border-radius: 0.5em;
+  box-sizing: border-box;
+  font-size: 1.2em;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+textarea{
+  width: 100% !important;
+  box-sizing: border-box;
+  padding: 0.7em;
+  margin: 0.5em 0;
+  background-color: #f9f9f9;
+  border: 2px solid lightgray;
+  border-radius: 0.5em;
+  font-family: inherit;
+  font-size: 1.1em;
+}
+
+.reqStar{
+  color: red;
+  font-size: 1.2em;
+}
+
+nav{
+  background-color: lightgrey;
+	grid-area: nav;
+  box-shadow: 8px 10px 10px 0 rgba(0,0,0,0.5);
+  z-index: 1;
+}
+
+nav ul{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 12em;
+}
+
+nav ul li a{
+  padding: 1em;
+  text-decoration: none;
+  color: black;
+  height: 100%;
+	padding: 0.2em 0 0.2em 0.2em;
+  display: flex;
+	align-items: center;
+  border-radius: 1em;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+nav ul li a:hover{
+  background-color: #aed8ec !important;
+} 
+
+nav ul li a.active{
+  background-color: #55c1f7;
+}
+
+header{
+  grid-area: header;
+  box-shadow: 8px 10px 10px 0 rgba(0,0,0,0.5);
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1em;
+  min-height: 12em;
+  position: relative;
+  z-index: 2;
+}
+
+.sessionInfo{
+  position: absolute;
+  right: 1em;
+  text-align: center;
+}
+
+header img{
+  position: absolute;
+  left: 1em;
+  height: 8em;
+}
+
+header h1{
+  /* font-size: 3em; */
+  margin: 0;
+}
+
+footer{
+  background-color: white;
+  grid-area: footer;
+  min-height: 10em;
+  border-top: 0.2em solid black;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1;
+}

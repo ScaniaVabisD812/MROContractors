@@ -1,0 +1,10 @@
+Status:
+0 - Inskickad, inte än behandlad
+1 - Behandlad, nekad
+2 - Behandlad, godkänd
+3 - Borttagen av användare
+4 - Borttagen av moderator
+
+LastStatusChange: Datum
+
+ArticleMessage
