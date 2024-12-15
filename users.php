@@ -46,7 +46,7 @@
         <nav>
             <ul>
                 <li><a class="" href="index.php"><span class="material-symbols-filled">home</span>Hem</a></li>
-                <li><a class="" href=""><span class="class material-symbols-filled">article</span>Artiklar</a></li>
+                <li><a class="" href="articles.php"><span class="class material-symbols-filled">article</span>Artiklar</a></li>
                 <?php
                     if($_SESSION["author"] == "1")
                     {
@@ -82,29 +82,34 @@
                         }
                     }
                 ?>
-                <form method="GET" action="">
-                    <label for="name">Namn</label>
-                    <input type="text" name="name" id="name" placeholder="Ex. Magnus Karlsson">
-                    <label for="username">Användarnamn</label>
-                    <input type="text" name="username" id="username" placeholder="Användarnamn">
-                    <label for="association"></label>
-                    <?php
-                        $pdo = new PDO("mysql:host=$DBServer;dbname=$DBName", $DBUsername, $DBPassword);
-                        $querystring = "SELECT * FROM Associations ORDER BY Name ASC;";
-                        $stmt = $pdo->prepare($querystring);
-                        $stmt->execute();
-                        $queryResult = $stmt->fetchAll();
-                    ?>
-                    <select name="association" id="association">
-                        <option value="" disabled selected>Förening</option>
+                <span id="toggle" class="filterButton material-symbols-filled">arrow_downward</span>
+                <section id="section">
+                    <form method="GET" action="">
+                        <label for="name">Namn</label>
+                        <input type="text" name="name" id="name" placeholder="Ex. Magnus Karlsson">
+                        <label for="username">Användarnamn</label>
+                        <input type="text" name="username" id="username" placeholder="Användarnamn">
+                        <label for="association"></label>
                         <?php
-                            foreach($queryResult as $row)
-                            {
-                                echo("<option value='" . $row["AssociationID"] . "'>" . $row["Name"] . "</option>");
-                            }
+                            $pdo = new PDO("mysql:host=$DBServer;dbname=$DBName", $DBUsername, $DBPassword);
+                            $querystring = "SELECT * FROM Associations ORDER BY Name ASC;";
+                            $stmt = $pdo->prepare($querystring);
+                            $stmt->execute();
+                            $queryResult = $stmt->fetchAll();
                         ?>
-                    </select>
-                    <button type="submit">Filtrera</button>
+                        <select name="association" id="association">
+                            <option value="" disabled selected>Förening</option>
+                            <?php
+                                foreach($queryResult as $row)
+                                {
+                                    echo("<option value='" . $row["AssociationID"] . "'>" . $row["Name"] . "</option>");
+                                }
+                            ?>
+                        </select>
+                        <button type="submit">Filtrera</button>
+                    </form>
+                </section>
+                <script src="javascript/dropdown.js"></script>
                     <table>
                         <thead>
                             <tr>

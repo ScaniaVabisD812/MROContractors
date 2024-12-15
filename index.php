@@ -39,7 +39,7 @@
         <nav>
             <ul>
                 <li><a class="active" href="index.php"><span class="material-symbols-filled">home</span>Hem</a></li>
-                <li><a class="" href=""><span class="class material-symbols-filled">article</span>Artiklar</a></li>
+                <li><a class="" href="articles.php"><span class="class material-symbols-filled">article</span>Artiklar</a></li>
                 <?php
                     if($_SESSION["author"] == "1")
                     {

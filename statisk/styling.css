@@ -1,3 +1,55 @@
+:root {
+  --md-sys-color-primary: rgb(7 103 127);
+  --md-sys-color-surface-tint: rgb(7 103 127);
+  --md-sys-color-on-primary: rgb(255 255 255);
+  --md-sys-color-primary-container: rgb(183 234 255);
+  --md-sys-color-on-primary-container: rgb(0 31 40);
+  --md-sys-color-secondary: rgb(0 104 116);
+  --md-sys-color-on-secondary: rgb(255 255 255);
+  --md-sys-color-secondary-container: rgb(158 239 253);
+  --md-sys-color-on-secondary-container: rgb(0 31 36);
+  --md-sys-color-tertiary: rgb(87 89 146);
+  --md-sys-color-on-tertiary: rgb(255 255 255);
+  --md-sys-color-tertiary-container: rgb(225 224 255);
+  --md-sys-color-on-tertiary-container: rgb(18 20 75);
+  --md-sys-color-error: rgb(186 26 26);
+  --md-sys-color-on-error: rgb(255 255 255);
+  --md-sys-color-error-container: rgb(255 218 214);
+  --md-sys-color-on-error-container: rgb(65 0 2);
+  --md-sys-color-background: rgb(245 250 253);
+  --md-sys-color-on-background: rgb(23 28 31);
+  --md-sys-color-surface: rgb(245 250 253);
+  --md-sys-color-on-surface: rgb(23 28 31);
+  --md-sys-color-surface-variant: rgb(219 228 232);
+  --md-sys-color-on-surface-variant: rgb(64 72 76);
+  --md-sys-color-outline: rgb(112 120 124);
+  --md-sys-color-outline-variant: rgb(191 200 204);
+  --md-sys-color-shadow: rgb(0 0 0);
+  --md-sys-color-scrim: rgb(0 0 0);
+  --md-sys-color-inverse-surface: rgb(44 49 52);
+  --md-sys-color-inverse-on-surface: rgb(237 241 244);
+  --md-sys-color-inverse-primary: rgb(136 209 236);
+  --md-sys-color-primary-fixed: rgb(183 234 255);
+  --md-sys-color-on-primary-fixed: rgb(0 31 40);
+  --md-sys-color-primary-fixed-dim: rgb(136 209 236);
+  --md-sys-color-on-primary-fixed-variant: rgb(0 78 97);
+  --md-sys-color-secondary-fixed: rgb(158 239 253);
+  --md-sys-color-on-secondary-fixed: rgb(0 31 36);
+  --md-sys-color-secondary-fixed-dim: rgb(130 211 224);
+  --md-sys-color-on-secondary-fixed-variant: rgb(0 79 88);
+  --md-sys-color-tertiary-fixed: rgb(225 224 255);
+  --md-sys-color-on-tertiary-fixed: rgb(18 20 75);
+  --md-sys-color-tertiary-fixed-dim: rgb(192 193 255);
+  --md-sys-color-on-tertiary-fixed-variant: rgb(63 65 120);
+  --md-sys-color-surface-dim: rgb(214 219 222);
+  --md-sys-color-surface-bright: rgb(245 250 253);
+  --md-sys-color-surface-container-lowest: rgb(255 255 255);
+  --md-sys-color-surface-container-low: rgb(239 244 247);
+  --md-sys-color-surface-container: rgb(234 239 241);
+  --md-sys-color-surface-container-high: rgb(228 233 236);
+  --md-sys-color-surface-container-highest: rgb(222 227 230);
+}
+
 @font-face {
 	font-family: "Material Symbols Outlined";
 	font-style: normal;
@@ -35,6 +87,11 @@ main{
   min-height: 100vh;
   padding: 3em;
   grid-area: main;
+}
+
+h3{
+  margin: 0;
+  margin: 0.5em 0;
 }
 
 table{
@@ -96,6 +153,7 @@ tr:nth-child(odd){
 }
 
 div.container{
+  position: relative;
   background-color: white;
   padding: 1em;
   width: 100%;
@@ -104,6 +162,36 @@ div.container{
   border: 2px solid lightgray;
   margin-top: 3em;
   margin-bottom: 3em;
+}
+
+.secondaryContainer{
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+
+  transition: all 0.2s;
+}
+
+.tertiaryContainer{
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+  transition: all 0.2s;
+}
+
+a.secondaryContainer:hover{
+  opacity: 0.6;
+}
+
+a.tertiaryContainer:hover{
+  opacity: 0.6;
+}
+
+a.articleContainer{
+  position: relative;
+  display: block;
+  text-decoration: none;
+  padding: 1em;
+  border-radius: 1em;
+  margin-bottom: 1em;
 }
 
 div.loginContainer{
@@ -151,6 +239,13 @@ div.loginContainer{
   height: 300px;
   margin: 10px;
   object-fit: cover;
+}
+
+.filterButton{
+  position: absolute;
+  right: 16px;
+  top: 36px;
+  cursor: pointer;
 }
 
 form{
@@ -235,8 +330,22 @@ textarea{
   font-size: 1.2em;
 }
 
+.articleDetailsContainer{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.openArticle{
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 nav{
-  background-color: lightgrey;
+  background-color: #d3d3d3;
 	grid-area: nav;
   box-shadow: 8px 10px 10px 0 rgba(0,0,0,0.5);
   z-index: 1;
@@ -310,4 +419,40 @@ footer{
   justify-content: space-around;
   align-items: center;
   z-index: 1;
+}
+
+/* HIDE/SHOW SECTION */
+#section{
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.rotated{
+  transform: rotate(180deg);
+}
+
+.rotate{
+  animation: rotate 0.2s forwards;
+}
+
+.deRotate{
+  animation: deRotate 0.2s forwards;
+}
+
+@keyframes rotate{
+  from{
+      transform: rotate(0deg);
+  }
+  to{
+      transform: rotate(180deg);
+  }
+}
+
+@keyframes deRotate{
+  from{
+      transform: rotate(180deg);
+  }
+  to{
+      transform: rotate(0deg);
+  }
 }
