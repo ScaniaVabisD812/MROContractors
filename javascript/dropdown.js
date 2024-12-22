@@ -1,7 +1,15 @@
 var toggle = document.getElementById("toggle");
-var state = 0;
 var section = document.getElementById("section");
-section.style.maxHeight = section.scrollHeight + "px";
+var state = section.getAttribute("data-state");
+if(state == 0)
+{
+    section.style.maxHeight = section.scrollHeight + "px";
+}
+else
+{
+    section.style.maxHeight = 0;
+    toggle.classList.add("rotate");
+}
 
 toggle.addEventListener("click", function() 
 {

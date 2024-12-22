@@ -46,12 +46,12 @@
         <nav>
             <ul>
                 <li><a class="" href="index.php"><span class="material-symbols-filled">home</span>Hem</a></li>
-                <li><a class="active" href="articles.php"><span class="class material-symbols-filled">article</span>Artiklar</a></li>
+                <li><a class="" href="articles.php"><span class="class material-symbols-filled">article</span>Artiklar</a></li>
                 <?php
                     if($_SESSION["author"] == "1")
                     {
                         echo("<li><a class='' href='createArticle.php'><span class='material-symbols-filled'>add</span>Skapa artikel</a></li>");
-                        echo('<li><a class="" href=""><span class="material-symbols-filled">edit_note</span>Mina artiklar</a></li>');
+                        echo('<li><a class="" href="myArticles.php"><span class="material-symbols-filled">edit_note</span>Mina artiklar</a></li>');
                     }
                     if($_SESSION["moderator"] == "1")
                     {
@@ -133,7 +133,7 @@
                                 }
                                 
                                 echo('<td class="denyButton"><a class="denyButton" href="assessDenyMessage.php?articleID=' . $article["ArticleID"] . '"><span class="material-symbols-filled">cancel</span></a></td>');
-                                echo('<td class="approveButton"><a class="approveButton" href="details.php?articleID=' . $article["ArticleID"] . '"><span class="material-symbols-filled">arrow_forward</span></a></td>');
+                                echo('<td class="approveButton"><a class="approveButton" href="article.php?articleID=' . $article["ArticleID"] . '"><span class="material-symbols-filled">arrow_forward</span></a></td>');
                                 echo("</tr>");
                             }
                         ?>

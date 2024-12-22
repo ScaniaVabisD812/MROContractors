@@ -37,8 +37,6 @@
             echo("<title>" . $articles[0]["Title"] . "</title>");
         }
     ?>
-    
-    <title>Väntande artiklar</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -98,20 +96,6 @@
                 else
                 {
                     echo("<h2>" . $articles[0]["Title"] . "</h2>");
-                    echo("<table>");
-                    echo("<thead>");
-                    echo("<tr>");
-                    echo("<th>Neka med kommentar</th>");
-                    echo("<th>Godkänn</th>");
-                    echo("</tr>");
-                    echo("</thead>");
-                    echo("<tbody>");
-                    echo("<tr>");
-                    echo('<td class="equalWidthCell denyButton"><a class="denyButton" href="assessDenyMessage.php?articleID=' . $articles[0]["ArticleID"] . '"><span class="material-symbols-filled">cancel</span></a></td>');
-                    echo('<td class="equalWidthCell approveButton"><a class="approveButton" href="process/process-acceptArticle.php?articleID=' . $articles[0]["ArticleID"] . '"><span class="material-symbols-filled">arrow_forward</span></a></td>');
-                    echo("</tr>");
-                    echo("</tbody>");
-                    echo("</table>");
 
                     echo("<h3>" . $articles[0]["FirmName"] . "</h3>");
                     echo("<p>" . $articles[0]["FirmName"] . " - " . $articles[0]["FirmWebsite"] . "</p>");
@@ -148,6 +132,21 @@
                         echo("<a href='fullPic.php?image=" . $image["Filenamez"] ."'><img src='process/process-fetchImage.php?image=" . $image["Filenamez"] . "' alt='Bild " . $num . "'></a>");
                     }
                     echo("</div>");
+
+                    echo("<table>");
+                    echo("<thead>");
+                    echo("<tr>");
+                    echo("<th>Neka med kommentar</th>");
+                    echo("<th>Godkänn</th>");
+                    echo("</tr>");
+                    echo("</thead>");
+                    echo("<tbody>");
+                    echo("<tr>");
+                    echo('<td class="equalWidthCell denyButton"><a class="denyButton" href="assessDenyMessage.php?articleID=' . $articles[0]["ArticleID"] . '"><span class="material-symbols-filled">cancel</span></a></td>');
+                    echo('<td class="equalWidthCell approveButton"><a class="approveButton" href="process/process-acceptArticle.php?articleID=' . $articles[0]["ArticleID"] . '"><span class="material-symbols-filled">arrow_forward</span></a></td>');
+                    echo("</tr>");
+                    echo("</tbody>");
+                    echo("</table>");
                 }
             ?>
         </div>

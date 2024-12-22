@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $parameters .= ", :cost";
     }
 
-    $querystring = "INSERT INTO Articles (Status, Title, FirmName, FirmAddress, Content, AuthorID" . $fields . ") VALUES (0, :title, :firmName, :firmAddress, :content, :authorID" . $parameters . ");";
+    $querystring = "INSERT INTO Articles (Status, Title, FirmName, FirmAddress, Content, AuthorID, CategoryID, WrittenDate" . $fields . ") VALUES (0, :title, :firmName, :firmAddress, :content, :authorID, :categoryID, :writtenDate" . $parameters . ");";
     $stmt = $pdo->prepare($querystring);
 
     $stmt->bindParam(":title", $_POST["title"]);
@@ -58,6 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bindParam(":firmAddress", $_POST["firmAddress"]);
     $stmt->bindParam(":content", $_POST["content"]);
     $stmt->bindParam(":authorID", $_SESSION["userID"]);
+    $stmt->bindParam(":categoryID", $_POST["categoryID"]);
+    $stmt->bindParam(":writtenDate", date("Y-m-d"));
 
     if($_POST["firmWebsite"] != "")
     {
@@ -84,6 +86,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     else 
     {
         $errors .= "Kunde inte spara artikeln i databasen<br/>";
+    }
+
+    $querystring = "INSERT INTO ArticleStatusChanges (ArticleID, NewStatus, POT, UserID) VALUES (:articleID, '0', :pot, :userID);";
+    $stmt = $pdo->prepare($querystring);
+    $stmt->bindParam(":articleID", $articleID);
+    $stmt->bindParam(":pot", date("Y-m-d H:i:s"));
+    $stmt->bindParam(":userID", $_SESSION["userID"]);
+
+    if($articleSaved)
+    {
+        if(!$stmt->execute())
+        {
+            $errors .= "Kunde inte uppdatera artikelstatus<br/>";
+            $articleSaved = false;
+        }
     }
 }
 

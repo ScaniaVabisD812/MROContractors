@@ -51,12 +51,12 @@
         <nav>
         <ul>
                 <li><a class="" href="index.php"><span class="material-symbols-filled">home</span>Hem</a></li>
-                <li><a class="active" href="articles.php"><span class="class material-symbols-filled">article</span>Artiklar</a></li>
+                <li><a class="" href="articles.php"><span class="class material-symbols-filled">article</span>Artiklar</a></li>
                 <?php
                     if($_SESSION["author"] == "1")
                     {
                         echo("<li><a class='' href='createArticle.php'><span class='material-symbols-filled'>add</span>Skapa artikel</a></li>");
-                        echo('<li><a class="" href="myArticles.php"><span class="material-symbols-filled">edit_note</span>Mina artiklar</a></li>');
+                        echo('<li><a class="active" href=""><span class="material-symbols-filled">edit_note</span>Mina artiklar</a></li>');
                     }
                     if($_SESSION["moderator"] == "1")
                     {
@@ -169,19 +169,6 @@
                                 echo '<input type="text" name="vehicle" id="vehicle" placeholder="...">';
                             }
                         ?>
-    
-                        <label for="author">Författare</label>
-                        <?php
-                            if(isset($_GET["author"]))
-                            {
-                                echo '<input type="text" name="author" id="author" placeholder="..." value="' . $_GET["author"] . '">';
-                            }
-                            else
-                            {
-                                echo '<input type="text" name="author" id="author" placeholder="...">';
-                            }
-                        ?>
-
                         <input type="hidden" name="formUsed" value="articles.php">
 
                         <button type="submit">Filtrera</button>
@@ -206,7 +193,7 @@
                             echo "<div class='successContainer'>" . $_GET["success"] . "</div>";
                         }
                     }
-                    $querystringStart = "SELECT A.ArticleID AS ArticleID, A.Title AS Title, A.FirmName AS FirmName, A.WrittenDate AS WrittenDate, U.Name AS UserName, S.Name AS AssociationName FROM Articles A INNER JOIN Users U ON A.AuthorID = U.UserID INNER JOIN Associations S ON U.AssociationID = S.AssociationID WHERE Status = 2";
+                    $querystringStart = "SELECT A.ArticleID AS ArticleID, A.Title AS Title, A.FirmName AS FirmName, A.WrittenDate AS WrittenDate, U.Name AS UserName, S.Name AS AssociationName FROM Articles A INNER JOIN Users U ON A.AuthorID = U.UserID INNER JOIN Associations S ON U.AssociationID = S.AssociationID WHERE A.AuthorID = :authorID";
                     $querystringEnd = ";";
                     $params = array();
 
@@ -241,16 +228,11 @@
                         $querystringStart .= " AND A.Vehicle LIKE :vehicle";
                         $params[':vehicle'] = '%' . $_GET["vehicle"] . '%';
                     }
-                    if(isset($_GET["author"]) && $_GET["author"] != "") 
-                    {
-                        $querystringStart .= " AND U.Name LIKE :author";
-                        $params[':author'] = '%' . $_GET["author"] . '%';
-                    }
 
                     $querystring = $querystringStart . $querystringEnd;
 
                     $stmt = $pdo->prepare($querystring);
-
+                    $params[':authorID'] = $_SESSION["userID"];
                     foreach ($params as $key => &$val) {
                         $stmt->bindParam($key, $val);
                     }
@@ -263,22 +245,54 @@
                         echo("<div>Inga artiklar att visa!</div>");
                     }
 
-                    $color = "secondaryContainer";
                     foreach($articles as $article)
                     {
-                        //Title, FirmName, WrittenDate, Name, AssociationName
+                        $querystring = "SELECT * FROM ArticleStatusChanges WHERE ArticleID = :articleID ORDER BY POT DESC LIMIT 1;";
+                        $stmt = $pdo->prepare($querystring);
+                        $stmt->bindParam(":articleID", $article["ArticleID"]);
+                        $stmt->execute();
+                        $statusChanges = $stmt->fetchAll();
+
+                        /* 
+                        Status:
+                        0 - Inskickad, inte än behandlad
+                        1 - Behandlad, nekad
+                        2 - Behandlad, godkänd
+                        3 - Borttagen av användare
+                        4 - Borttagen av moderator
+                        */
+                        $color = "";
+                        $status = "";
+                        if($statusChanges[0]["NewStatus"] == 0)
+                        {
+                            $color = "waiting";
+                            $status = "Väntar på bedömning";
+                        }
+                        else if($statusChanges[0]["NewStatus"] == 1)
+                        {
+                            $color = "denied";
+                            $status = "Nekad";
+                        }
+                        else if($statusChanges[0]["NewStatus"] == 2)
+                        {
+                            $color = "approved";
+                            $status = "Godkänd";
+                        }
+                        else if($statusChanges[0]["NewStatus"] == 3 || $statusChanges[0]["NewStatus"] == 4)
+                        {
+                            $color = "deleted";
+                            $status = "Borttagen";
+                        }
+
                         echo("<a href='article.php?articleID=" . $article["ArticleID"] . "' class='articleContainer " . $color . "'>");
-                        echo("<h3>" . $article["Title"] . "</h3>");
+                        echo("<h3>" . $article["Title"] . " - " . $status . "</h3>");
                         echo("<div class='articleDetailsContainer'>");
                         echo("<div>" . $article["FirmName"] . "</div>");
                         echo("<div>" . $article["WrittenDate"] . "</div>");
-                        echo("<div>" . $article["UserName"] . "</div>");
-                        echo("<div>" . $article["AssociationName"] . "</div>");
+                        echo("<div>Senast ändrad: " . $statusChanges[0]["POT"] . "</div>");
                         echo("</div>");
                         echo("<span class='openArticle material-symbols-filled'>arrow_forward</span>");
                         echo("</a>");
-
-                        $color = ($color == "secondaryContainer") ? "tertiaryContainer" : "secondaryContainer";
                     }
                 ?>
             </div>

@@ -44,7 +44,7 @@
                     if($_SESSION["author"] == "1")
                     {
                         echo("<li><a class='' href='createArticle.php'><span class='material-symbols-filled'>add</span>Skapa artikel</a></li>");
-                        echo('<li><a class="" href=""><span class="material-symbols-filled">edit_note</span>Mina artiklar</a></li>');
+                        echo('<li><a class="" href="myArticles.php"><span class="material-symbols-filled">edit_note</span>Mina artiklar</a></li>');
                     }
                     if($_SESSION["moderator"] == "1")
                     {

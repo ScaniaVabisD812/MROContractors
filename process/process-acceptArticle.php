@@ -40,10 +40,10 @@
                     $errors = "Något gick fel... A";
                 }
                 
-                $querystring = "INSERT INTO ArticleStatusChanges (ArticleID, NewStatus, POT, UserID) VALUES (:articleID, '2', :pot, :userID);";
+                $querystring = "INSERT INTO ArticleStatusChanges (ArticleID, NewStatus, POT, UserID) VALUES (:articleID, 2, :pot, :userID);";
                 $stmt = $pdo->prepare($querystring);
                 $stmt->bindParam(":articleID", $_GET["articleID"]);
-                $stmt->bindParam(":pot", date("Y-m-d"));
+                $stmt->bindParam(":pot", date("Y-m-d H:i:s"));
                 $stmt->bindParam(":userID", $_SESSION["userID"]);
 
                 try{

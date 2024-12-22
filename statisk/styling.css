@@ -121,8 +121,18 @@ td{
   text-align: center;
 }
 
-.equalWidthCell{
-  width: 50%;
+.blackButton{
+  color: black;
+}
+
+table.optiontable {
+  width: 100%;
+  table-layout: fixed;
+}
+
+table.optiontable td, table.optiontable th{
+  width: auto;
+  text-align: center;
 }
 
 tr:nth-child(even){
@@ -192,6 +202,11 @@ a.articleContainer{
   padding: 1em;
   border-radius: 1em;
   margin-bottom: 1em;
+  transition: all 0.2s;
+}
+
+a.articleContainer:hover{
+  opacity: 0.6;
 }
 
 div.loginContainer{
@@ -229,6 +244,52 @@ div.loginContainer{
   font-weight: bold;
 }
 
+.statusContainer{
+  padding: 1em;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 1em;
+  margin-bottom: 1em;
+  font-weight: bold;
+}
+
+.waiting{
+  background-color: #ffee90;
+  border: 2px solid #FFD700;
+  color: black;
+  text-decoration: none;
+}
+
+.approved{
+  background-color: #90EE90;
+  border: 2px solid green;
+  color: black;
+  text-decoration: none;
+}
+
+.denied{
+  background-color: #ffcccb;
+  border: 2px solid red;
+  color: black;
+  text-decoration: none;
+}
+
+.deleted{
+  background-color: #ffb87e;
+  border: 2px solid rgb(255, 145, 0);
+  color: black;
+  text-decoration: none;
+}
+
+.categoryHeader{
+  display: flex;
+  align-items: center;
+}
+
+.categoryHeader span{
+  font-size: 1.2em;
+}
+
 .imageContainer {
   display: flex;
   flex-wrap: wrap;
@@ -239,6 +300,25 @@ div.loginContainer{
   height: 300px;
   margin: 10px;
   object-fit: cover;
+}
+
+.imgContainer{
+  position: relative;
+}
+
+.imgContainer div{
+  transition: all 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: lightgray;
+  color: black;
+  padding: 0.5em;
+  border-radius: 1em;
+  cursor: pointer;
 }
 
 .filterButton{

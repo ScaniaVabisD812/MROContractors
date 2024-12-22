@@ -43,7 +43,7 @@
                 $querystring = "INSERT INTO ArticleStatusChanges (ArticleID, NewStatus, POT, Message, UserID) VALUES (:articleID, '1', :pot, :message, :userID);";
                 $stmt = $pdo->prepare($querystring);
                 $stmt->bindParam(":articleID", $_POST["articleID"]);
-                $stmt->bindParam(":pot", date("Y-m-d"));
+                $stmt->bindParam(":pot", date("Y-m-d H:i:s"));
                 $stmt->bindParam(":message", $_POST["message"]);
                 $stmt->bindParam(":userID", $_SESSION["userID"]);
 
