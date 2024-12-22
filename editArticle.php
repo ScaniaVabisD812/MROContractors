@@ -130,10 +130,10 @@
                     <div>
                     <label for="category">Kategori</label>
                         <?php
-                            echo '<select name="category" id="category">';
-                            if(isset($articles[0]["category"]) && $articles[0]["category"] != "")
+                            echo '<select name="categoryID" id="categoryID">';
+                            if(isset($articles[0]["CategoryID"]) && $articles[0]["CategoryID"] != "")
                             {
-                                echo('<option value="' . $articles[0]["category"] . '">' . getCategoryName($categories, $_GET["category"]) . '</option>');
+                                echo('<option value="' . $articles[0]["CategoryID"] . '">' . getCategoryName($categories, $articles[0]["CategoryID"]) . '</option>');
                             }
                             echoCategories($categories);
                             echo '</select>';

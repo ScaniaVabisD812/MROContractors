@@ -107,6 +107,18 @@
     <main>
         <div class="container">
             <?php
+                if(isset($_GET["error"])) {
+                    if($_GET["error"] != "") {
+                        echo "<div class='errorContainer'>" . $_GET["error"] . "</div>";
+                    }
+                }
+                if(isset($_GET["success"])) {
+                    if($_GET["success"] != "") {
+                        echo "<div class='successContainer'>" . $_GET["success"] . "</div>";
+                    }
+                }
+            ?>
+            <?php
                 if($qualify)
                 {
                     $querystring = "SELECT * FROM ArticleStatusChanges WHERE ArticleID = :articleID ORDER BY POT DESC LIMIT 1;";
@@ -123,7 +135,7 @@
                     {
                         echo("<div class='statusContainer denied'>Artikeln nekad av moderator " . $statusChanges[0]["POT"] . ".");
                         echo("<div>Kommentar: " . $statusChanges[0]["Message"] . ".</div>");
-                        echo("<div><a href=editArticle?articleID=" . $_GET["articleID"] . ">Tryck här för att redigera och skicka in på nytt!</a></div>");
+                        echo("<div><a href=editArticle.php?articleID=" . $_GET["articleID"] . ">Tryck här för att redigera och skicka in på nytt!</a></div>");
                         echo("</div>");
                     }
                     else if($articles[0]["Status"] == 2)
@@ -143,7 +155,14 @@
                     echo("<thead>");
                     echo("<tr>");
                     echo("<th>Redigera</th>");
-                    echo("<th>Ta bort</th>");
+                    if($articles[0]["Status"] != 3 && $articles[0]["Status"] != 4)
+                    {
+                        echo("<th>Radera</th>");
+                    }
+                    else
+                    {
+                        echo("<th>Återför</th>");
+                    }
                     if($_SESSION["moderator"] == 1 && $articles[0]["Status"] == 0)
                     {
                         echo("<th>Neka</th>");
@@ -154,7 +173,16 @@
                     echo("<tbody>");
                     echo("<tr>");
                     echo('<td class="blackButton"><a class="blackButton" href="editArticle.php?articleID=' . $articles[0]["ArticleID"] . '"><span class="material-symbols-filled">edit</span></a></td>');
-                    echo('<td class="blackButton"><a class="blackButton" href="process/process-deleteArticle.php?articleID=' . $articles[0]["ArticleID"] . '"><span class="material-symbols-filled">delete</span></a></td>');
+
+                    if($articles[0]["Status"] != 3 && $articles[0]["Status"] != 4)
+                    {
+                        echo('<td class="blackButton"><a class="blackButton" href="process/process-deleteArticle.php?articleID=' . $articles[0]["ArticleID"] . '"><span class="material-symbols-filled">delete</span></a></td>');
+                    }
+                    else
+                    {
+                        echo('<td class="blackButton"><a class="blackButton" href="process/process-bringBackArticle.php?articleID=' . $articles[0]["ArticleID"] . '"><span class="material-symbols-filled">restore_from_trash</span></a></td>');
+                    }
+                    
                     if($_SESSION["moderator"] == 1 && $articles[0]["Status"] == 0)
                     {
                         echo('<td class="denyButton"><a class="denyButton" href="assessDenyMessage.php?articleID=' . $articles[0]["ArticleID"] . '"><span class="material-symbols-filled">cancel</span></a></td>');

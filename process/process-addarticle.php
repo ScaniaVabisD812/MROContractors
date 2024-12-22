@@ -163,5 +163,5 @@ if($articleSaved)
     }
 }
 
-header("Location: ../createArticle.php?success=" . $success . "&error=" . $errors);
+header("Location: ../article.php?success=" . $success . "&error=" . $errors . "&articleID=" . $articleID);
 ?>
