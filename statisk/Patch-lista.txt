@@ -1,3 +1,4 @@
 - Hashade lösenord
+- Footer
 - Användare ska kunna bli avstängda, inte kunna komma in men fortfarande låta dess data sparas istället för borttagna.
 - Ta bort all kod som skriver ut felmeddelanden avsedd för endast mig

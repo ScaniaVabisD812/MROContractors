@@ -12,7 +12,6 @@
 <body>
     <div class="GridContainer">
         <header>
-            <img src="statisk/logotyp.png" alt="logotyp">
             <h1>Leverantördatabas</h1>
             <div class="sessionInfo">
             </div>
@@ -37,15 +36,21 @@
                         <input type="password" name="password" id="password" placeholder="Lösenord" required>
                     </div>
                     <div>
-                        <button type="submit">Logga in</button>
+                        <button class="primaryContainer" type="submit">Logga in</button>
                     </div>
                 </form>
             </div>
         </main>
         <footer>
-            <div>Prototyp 1</div>
-            <div>...</div>
-            <div>Uppdaterad: 2024-10-23</div>
+            <?php
+                $json = file_get_contents("json/footer.json");
+                $footer = json_decode($json, true);
+
+                foreach($footer["footer"] as $item)
+                {
+                    echo("<div>" . $item["text"] . "</div>");
+                }
+            ?>
         </footer>
     </div>
 </body>

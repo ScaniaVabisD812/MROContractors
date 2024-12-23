@@ -4,5 +4,5 @@
 		"nav header"
 		"nav main"
 		"footer footer";
-  grid-template-columns: 12em 1fr;
+	grid-template-columns: 7em 1fr;
 }

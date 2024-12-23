@@ -29,40 +29,51 @@
 <body>
     <div class="GridContainer">
         <header>
-            <img src="statisk/logotyp.png" alt="logotyp">
             <h1>Leverantördatabas</h1>
             <div class="sessionInfo">
-                <div class="container">
-                    <!-- <div>Du är <span style="color: green; font-weight: 900;">inloggad</span>!</div>
-                    <div>Du är <span style="color: red; font-weight: 900;">inte inloggad</span>!</div> -->
+                <div>
                     <?php
-                        echo("<div>" . $_SESSION["name"] . "</div>");
-                        echo("<div>" . $_SESSION["associationName"] . "</div>");
+                        echo("<div>Användare: " . $_SESSION["username"] . "</div>");
+                        echo("<div>Förening: " . $_SESSION["associationName"] . "</div>");
                     ?>
-                    <p><a href="process/processLogins.php?logoutReq=true">Logga ut</a></p>
+                    <a href="process/processLogins.php?logoutReq=true">Logga ut</a>
                 </div>
             </div>
         </header>
         <nav>
             <ul>
-                <li><a class="" href="index.php"><span class="material-symbols-filled">home</span>Hem</a></li>
-                <li><a class="" href="articles.php"><span class="class material-symbols-filled">article</span>Artiklar</a></li>
+                <li>
+                    <a href="index.php">
+                        <div class="material-symbols-outlined menuIcon">
+                            home
+                        </div>
+                        <div>Hem</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="articles.php">
+                        <div class="material-symbols-outlined menuIcon">
+                            article
+                        </div>
+                        <div>Artiklar</div>
+                    </a>
+                </li>
                 <?php
                     if($_SESSION["author"] == "1")
                     {
-                        echo("<li><a class='' href='createArticle.php'><span class='material-symbols-filled'>add</span>Skapa artikel</a></li>");
-                        echo('<li><a class="" href="myArticles.php"><span class="material-symbols-filled">edit_note</span>Mina artiklar</a></li>');
+                        echo("<li><a href='createArticle.php'><div class='material-symbols-outlined menuIcon'>add</div><div>Skapa artikel</div></a></li>");
+                        echo("<li><a href='myArticles.php'><div class='material-symbols-outlined menuIcon'>edit_note</div><div>Mina artiklar</div></a></li>");
                     }
                     if($_SESSION["moderator"] == "1")
                     {
-                        echo('<li><a class="" href="assess.php"><span class="material-symbols-filled">shield</span>Väntande artiklar</a></li>');
+                        echo("<li><a href='assess.php'><div class='material-symbols-outlined menuIcon'>shield</div><div>Väntande artiklar</div></a></li>");
                     }
                     if($_SESSION["admin"] == "1")
                     {
-                        echo('<li><a class="" href="associations.php"><span class="material-symbols-filled">group</span>Föreningar</a></li>');
-                        echo('<li><a class="" href="users.php"><span class="material-symbols-filled">person_edit</span>Användare</a></li>');
-                        echo('<li><a class="active" href="createUser.php"><span class="material-symbols-filled">person_add</span>Skapa användare</a></li>');
-                        echo('<li><a class="" href=""><span class="material-symbols-filled">history</span>Historik</a></li>');
+                        echo("<li><a href='associations.php'><div class='material-symbols-outlined menuIcon'>group</div><div>Föreningar</div></a></li>");
+                        echo("<li><a href='users.php'><div class='material-symbols-outlined menuIcon'>person_edit</div><div>Användare</div></a></li>");
+                        echo("<li><a href='createUser.php'><div class='material-symbols-filled menuIcon'>person_add</div><div>Skapa användare</div></a></li>");
+                        echo("<li><a href=''><div class='material-symbols-outlined menuIcon'>history</div><div>Historik</div></a></li>");
                     }
                 ?>
             </ul>
@@ -113,14 +124,20 @@
                             }
                         ?>
                     </select>
-                    <button type="submit">Skapa användare</button>
+                    <button class="primaryContainer" type="submit">Skapa användare</button>
                 </form>
             </div>
         </main>
         <footer>
-            <div>Prototyp 1</div>
-            <div>...</div>
-            <div>Uppdaterad: 2024-10-23</div>
+            <?php
+                $json = file_get_contents("json/footer.json");
+                $footer = json_decode($json, true);
+
+                foreach($footer["footer"] as $item)
+                {
+                    echo("<div>" . $item["text"] . "</div>");
+                }
+            ?>
         </footer>
     </div>
 </body>
