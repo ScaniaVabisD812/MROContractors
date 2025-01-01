@@ -46,6 +46,10 @@
                 $_POST["moderator"] = 0;
             }
         }
+        else
+        {
+            $_POST["moderator"] = 0;
+        }
 
         if(isset($_POST["admin"]))
         {
@@ -58,9 +62,13 @@
                 $_POST["admin"] = 0;
             }
         }
-
+        else
+        {
+            $_POST["admin"] = 0;
+        }
+        
         $associationRole = "Medlem";
-        if(isset($_POST["associationRole"]))
+        if(isset($_POST["associationRole"]) AND $_POST["associationRole"] != "")
         {
             $associationRole = $_POST["associationRole"];
         }
