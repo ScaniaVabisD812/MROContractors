@@ -67,9 +67,9 @@
                 }
             }
 
-            if(isset($_POST["password"]))
+            if(isset($_POST["changePassword"]))
             {
-                if($_POST["password"] != "")
+                if($_POST["changePassword"] == "on")
                 {
                     $changes .= ", Passwordz = :password";
                 }
@@ -109,11 +109,12 @@
                         $stmt->bindParam(":username", $_POST["username"]);
                     }
                 }
-                if(isset($_POST["password"]))
+                if(isset($_POST["changePassword"]))
                 {
-                    if($_POST["password"] != "")
+                    if($_POST["changePassword"] == "on")
                     {
-                        $stmt->bindParam(":password", $_POST["password"]);
+                        $password = hash("sha256", "bytLösenord!");
+                        $stmt->bindParam(":password", $password);
                     }
                 }
                 if(isset($_POST["name"]))
@@ -137,7 +138,6 @@
                         $stmt->bindParam(":associationRole", $_POST["associationRole"]);
                     }
                 }
-
     
                 try
                 {

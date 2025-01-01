@@ -4,6 +4,19 @@
     if(!isset($_SESSION["username"]))
     {
         header("Location: login.php");
+        die();
+    }
+
+    if($_SESSION["moderator"] == "0" AND $_SESSION["admin"] == "0")
+    {
+        header("Location: index.php");
+        die();
+    }
+    
+    if($_SESSION["changePassword"])
+    {
+        header("Location: changePassword.php");
+        die();
     }
 
     require_once '../../httpd.private/config.php';

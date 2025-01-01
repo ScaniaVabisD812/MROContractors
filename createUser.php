@@ -4,6 +4,18 @@
     if(!isset($_SESSION["username"]))
     {
         header("Location: login.php");
+        die();
+    }
+
+    if($_SESSION["admin"] == "0")
+    {
+        header("Location: index.php");
+    }
+    
+    if($_SESSION["changePassword"])
+    {
+        header("Location: changePassword.php");
+        die();
     }
 
     require_once '../../httpd.private/config.php';
@@ -98,8 +110,6 @@
                     <input type="text" name="name" id="name" placeholder="Ex. Magnus Karlsson" required>
                     <label for="username">Användarnamn</label>
                     <input type="text" name="username" id="username" placeholder="Användarnamn" required>
-                    <label for="password">Lösenord</label>
-                    <input type="text" name="password" id="password" placeholder="Lösenord" required>
                     <div>
                         <input type="checkbox" name="author" id="author"> <label class="checkboxLabel" for="author">Författare</label>
                     </div>
@@ -124,6 +134,8 @@
                             }
                         ?>
                     </select>
+                    <label for="associationRole">Roll i förening</label>                
+                    <input type="text" name="associationRole" id="associationRole" placeholder="Ex. Maskinchef">
                     <button class="primaryContainer" type="submit">Skapa användare</button>
                 </form>
             </div>

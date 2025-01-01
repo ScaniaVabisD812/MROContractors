@@ -59,18 +59,26 @@
             }
         }
 
+        $associationRole = "Medlem";
+        if(isset($_POST["associationRole"]))
+        {
+            $associationRole = $_POST["associationRole"];
+        }
+
         if($_POST["associationID"] != "")
         {
-            $querystring = "INSERT INTO Users (Username, Passwordz, Name, Author, Moderator, Admin, AssociationID) VALUES (:username, :password, :name, :author, :moderator, :admin, :associationID);";
+            $querystring = "INSERT INTO Users (Username, Passwordz, Name, Author, Moderator, Admin, AssociationID, AssociationRole) VALUES (:username, :password, :name, :author, :moderator, :admin, :associationID, :associationRole);";
             $stmt = $pdo->prepare($querystring);
 
             $stmt->bindParam(":username", $_POST["username"]);
-            $stmt->bindParam(":password", $_POST["password"]);
+            $password = hash("sha256", "bytLösenord!");
+            $stmt->bindParam(":password", $password);
             $stmt->bindParam(":name", $_POST["name"]);
             $stmt->bindParam(":author", $_POST["author"]);
             $stmt->bindParam(":moderator", $_POST["moderator"]);
             $stmt->bindParam(":admin", $_POST["admin"]);
             $stmt->bindParam(":associationID", $_POST["associationID"]);
+            $stmt->bindParam(":associationRole", $associationRole);
 
             try
             {

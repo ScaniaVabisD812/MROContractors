@@ -4,10 +4,13 @@
     if(!isset($_SESSION["username"]))
     {
         header("Location: login.php");
+        die();
     }
-    if($_SESSION["author"] == "0")
+
+    if($_SESSION["changePassword"])
     {
-        header("Location: login.php");
+        header("Location: changePassword.php");
+        die();
     }
 
     require_once '../../httpd.private/config.php';

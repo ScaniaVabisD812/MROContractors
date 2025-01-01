@@ -4,7 +4,15 @@
     if(!isset($_SESSION["username"]))
     {
         header("Location: login.php");
+        die();
     }
+    
+    if($_SESSION["changePassword"])
+    {
+        header("Location: changePassword.php");
+        die();
+    }
+
     if($_SESSION["author"] == "0")
     {
         header("Location: login.php");

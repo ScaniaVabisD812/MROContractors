@@ -12,8 +12,10 @@ session_start();
 
 if(isset($_POST["username"]) && isset($_POST["password"]))
 {
+    //$password = hash("sha256", $_POST["password"]);
+
     $username = $_POST["username"];
-    $password = $_POST["password"];
+    $password = hash("sha256", $_POST["password"]);
 
     $querystring = "SELECT * FROM Users WHERE Username = :username AND Passwordz = :password;";
     $stmt = $pdo->prepare($querystring);
@@ -21,6 +23,7 @@ if(isset($_POST["username"]) && isset($_POST["password"]))
     $stmt->bindParam(":password", $password);
     $stmt->execute();
     $queryResult = $stmt->fetchAll();
+    $passwordDB = $queryResult[0]["Passwordz"];
 
     if(count($queryResult) > 0)
     {
@@ -41,21 +44,31 @@ if(isset($_POST["username"]) && isset($_POST["password"]))
         
         $_SESSION["associationName"] = $queryResult[0]["Name"];
 
+        if($passwordDB == hash("sha256", "bytLösenord!"))
+        {
+            $_SESSION["changePassword"] = true;
+            header("Location: ../changePassword.php");
+            die();
+        }
+        $_SESSION["changePassword"] = false;
         header("Location: ../index.php");
+        die();
     }
     else
     {
         header("Location: ../login.php?error=Inloggning misslyckades");
+        die();
     }
 }
 else if(isset($_GET["logoutReq"]))
 {
     session_destroy();
     header("Location: ../login.php");
+    die();
 }
 else
 {
     header("Location: ../login.php");
+    die();
 }
-
 ?>

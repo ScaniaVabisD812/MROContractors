@@ -4,6 +4,18 @@
     if(!isset($_SESSION["username"]))
     {
         header("Location: login.php");
+        die();
+    }
+
+    if($_SESSION["admin"] == "0")
+    {
+        header("Location: index.php");
+    }
+    
+    if($_SESSION["changePassword"])
+    {
+        header("Location: changePassword.php");
+        die();
     }
 
     require_once '../../httpd.private/config.php';
@@ -104,8 +116,19 @@
                 <form method="POST", action="process/process-editUser.php">
                     <label for="username">Användarnamn</label>
                     <?php echo('<input type="text" name="username" id="username" value="' . $user[0]["Username"] . '">') ?>
-                    <label for="password">Lösenord</label>
-                    <?php echo('<input type="text" name="password" id="password" value="' . $user[0]["Passwordz"] . '">') ?>
+                    
+                    <?php
+                        if($user[0]["Passwordz"] == hash("sha256", "bytLösenord!"))
+                        {
+                            echo("<div class='changePasswordText'>Lösenord: bytLösenord!</div>");
+                        }
+                        else
+                        {
+                            echo("<input class='changePasswordLabel' type='Checkbox' name='changePassword' id='changePassword'>");
+                            echo("<label class='changePasswordLabel checkboxLabel' for='changePassword'>Byt lösenord</label>");
+                        }
+                    ?>
+
                     <label for="name">Namn</label>
                     <?php echo('<input type="text" name="name" id="name" value="' . $user[0]["Name"] . '">') ?>
 
@@ -153,7 +176,7 @@
                     <label for="associationrole">Roll i förening</label>
                     <?php echo('<input type="text" name="associationRole" id="associationrole" value="' . $user[0]["AssociationRole"] . '">') ?>
                     <?php echo('<input type="hidden" name="userID" value="' . $user[0]["UserID"] . '">') ?>
-                    <button class="primaryContainer" type="submit">Redigera användare</button>
+                    <button class="primaryContainer" type="submit">Spara</button>
                 </form>
             </div>
         </main>

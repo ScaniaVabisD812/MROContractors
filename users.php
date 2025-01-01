@@ -4,6 +4,18 @@
     if(!isset($_SESSION["username"]))
     {
         header("Location: login.php");
+        die();
+    }
+
+    if($_SESSION["admin"] == "0")
+    {
+        header("Location: index.php");
+    }
+    
+    if($_SESSION["changePassword"])
+    {
+        header("Location: changePassword.php");
+        die();
     }
 
     require_once '../../httpd.private/config.php';
@@ -126,7 +138,6 @@
                             <tr>
                                 <th>Namn</th>
                                 <th>Användarnamn</th>
-                                <th>Lösenord</th>
                                 <th>Förening</th>
                                 <th>Författare</th>
                                 <th>Moderator</th>
@@ -186,7 +197,6 @@
                                     echo("<tr>");
                                     echo("<td>" . $row["UName"] . "</td>");
                                     echo("<td>" . $row["Username"] . "</td>");
-                                    echo("<td>" . $row["Passwordz"] . "</td>");
                                     echo("<td> <div>" . $row["AssociationRole"] . "</div> <div>" . $row["AName"] . "</div> </td>");
                                     if($row["Author"] == 1)
                                     {

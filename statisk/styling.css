@@ -359,6 +359,10 @@ label{
   display: inline;
 }
 
+.changePasswordLabel, .changePasswordText{
+  margin-bottom: 1em;
+}
+
 input[type="text"], input[type="password"], input[type="email"], input[type="number"]
 {
   width: 100%;
