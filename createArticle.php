@@ -132,7 +132,7 @@
                         <input type="text" name="firmAddress" id="firmAddress" placeholder="Ex. Gössäter Stationsvägen 4, 533 94 Hällekis" required>
                     </div>
                     <div>
-                        <label for="firmWebsite">Ev. Hemsida:</label>
+                        <label for="firmWebsite">Hemsida:</label>
                         <input type="text" name="firmWebsite" id="firmWebsite" placeholder="Ex. www.gossatermekaniska.se">
                     </div>
                     <div>
