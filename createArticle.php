@@ -153,8 +153,12 @@
                         <span style="font-weight: 900;">kr</span>
                     </div>
 
-                    <label for="image">Bilder:</label>
-                    <div>Tillåtna format: JPG, JPEG, PNG och GIF!</div>
+                    <label for="risk-assessment">Riskbedömning:</label>
+                    <div>Tillåtna format: PDF, DOCX, DOC och ODT</div>
+                    <input type="file" name="risk-assessment" id="risk-assessment">
+
+                    <label for="image">Bilder/dokument:</label>
+                    <div>Tillåtna format: PDF, DOCX, DOC, ODT, JPG, JPEG, PNG och GIF</div>
                     <input type="file" name="files[]" id="image" multiple>
 
                     <div>Fält markerade med "<span class="reqStar">*</span>" måste vara ifyllda!</div>

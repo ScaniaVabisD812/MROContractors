@@ -182,34 +182,85 @@
                         <?php echo("<input style='width: auto;' type='number' name='cost' id='cost' placeholder='' value='" . $articles[0]["Cost"] . "'>")?>
                         <span style="font-weight: 900;">kr</span>
                     </div>
-
+                    <h3>Bilder</h3>
                     <?php
-                        $querystring = "SELECT FileID, Filenamez FROM Images WHERE ArticleID = :articleID;";
+                        $querystring = "SELECT Type, FileID, Filenamez FROM Images WHERE ArticleID = :articleID;";
                         $stmt = $pdo->prepare($querystring);
                         $stmt->bindParam(":articleID", $articles[0]["ArticleID"]);
                         $stmt->execute();
-                        $images = $stmt->fetchAll();
+                        $files = $stmt->fetchAll();
         
                         echo("<div class='imageContainer'>");
-                        $num = 0;
-                        foreach($images as $image)
+                        $num = 1;
+                        foreach($files as $file)
                         {
-                            echo("<div class='imgContainer' data-imageID='" . $image["FileID"] . "'>");
-                            echo("<a class='articleImageEdit' target='_blank' href='fullPic.php?image=" . $image["Filenamez"] ."'><img src='process/process-fetchImage.php?image=" . $image["Filenamez"] . "' alt='Bild " . $num . "'>");
-                            echo("</a>");
-                            echo("<div class='deleteImage' style=''>");
-                            echo("<span class='material-symbols-filled'>delete</span>");
-                            echo("<input class='deleteInput' type='hidden' name='deleteImage[]' value=''>");
-                            echo("</div>");
-                            echo("</div>");
+                            if($file["Type"] == "img")
+                            {
+                                echo("<div class='imgContainer' data-imageID='" . $file["FileID"] . "'>");
+                                echo("<a class='articleImageEdit' target='_blank' href='fullPic.php?image=" . $file["Filenamez"] ."'><img src='process/process-fetchImage.php?image=" . $file["Filenamez"] . "' alt='Bild " . $num . "'>");
+                                echo("</a>");
+                                echo("<div class='deleteImage' style=''>");
+                                echo("<span class='material-symbols-filled'>delete</span>");
+                                echo("<input class='deleteInput' type='hidden' name='deleteImage[]' value=''>");
+                                echo("</div>");
+                                echo("</div>");
+                                $num++;
+                            }
+                        }
+                        echo("</div>");
+                    ?>
+
+                    <h3>Dokument</h3>
+                    <?php
+                        $riskExist = false;
+                        echo("<div class='fileContainer'>");
+                        foreach($files as $file)
+                        {
+                            if($file["Type"] == "risk")
+                            {
+                                echo("<div class='imgContainer' data-imageID='" . $file["FileID"] . "'>");
+                                echo("<a class='fileButton' href='document.php?document=" . $file["Filenamez"] . "'><span class='material-symbols-outlined'>description</span><span>Riskbedömning</span></a>");
+                                echo("<div class='deleteImage' style=''>");
+                                echo("<span class='material-symbols-filled'>delete</span>");
+                                echo("<input class='deleteInput' type='hidden' name='deleteImage[]' value=''>");
+                                echo("</div>");
+                                echo("</div>");
+                                $riskExist = true;
+                            }
+                        }
+                        $num = 1;
+                        foreach($files as $file)
+                        {
+                            if($file["Type"] == "doc")
+                            {
+                                echo("<div class='imgContainer' data-imageID='" . $file["FileID"] . "'>");
+                                echo("<a class='fileButton' href='document.php?document=" . $file["Filenamez"] . "'><span class='material-symbols-outlined'>description</span><span>Dokument $num</span></a>");
+                                echo("<div class='deleteImage' style=''>");
+                                echo("<span class='material-symbols-filled'>delete</span>");
+                                echo("<input class='deleteInput' type='hidden' name='deleteImage[]' value=''>");
+                                echo("</div>");
+                                echo("</div>");
+                                $num++;
+                            }
+
                         }
                         echo("</div>");
                     ?>
 
                     <script src="javascript/deletePicture.js"></script>
 
-                    <label for="image">Bilder:</label>
-                    <div>Tillåtna format: JPG, JPEG, PNG och GIF!</div>
+                    <label for="risk-assessment">Riskbedömning:</label>
+                    <?php
+                        if($riskExist)
+                        {
+                            echo("<div>OBS! En riskbedömning finns redan. Om du laddar upp en ny kommer den gamla att raderas.</div>");
+                        }
+                    ?>
+                    <div>Tillåtna format: PDF, DOCX, DOC och ODT</div>
+                    <input type="file" name="risk-assessment" id="risk-assessment">
+
+                    <label for="image">Bilder/dokument:</label>
+                    <div>Tillåtna format: PDF, DOCX, DOC, ODT, JPG, JPEG, PNG och GIF</div>
                     <input type="file" name="files[]" id="image" multiple>
 
                     <div>Fält markerade med "<span class="reqStar">*</span>" måste vara ifyllda!</div>

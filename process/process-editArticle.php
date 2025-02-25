@@ -128,56 +128,136 @@ if($articleSaved)
         // Mapp där bilderna ska sparas
         $target_dir = "../../../httpd.private/uploads/";
 
-        for($i = 0; $i < count($_FILES["files"]["name"]); $i++)
+        if($_FILES["files"]["name"][0] != "")
         {
-
-            $target_file = $target_dir . basename($_FILES["files"]["name"][$i]);
-            $uploadOk = 1;
-            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-
-
-            // Kontrollera om filen har laddats upp
-            if(isset($_FILES["files"]) && $_FILES["files"]["error"][$i] == 0)
+            for($i = 0; $i < count($_FILES["files"]["name"]); $i++)
             {
-                // Kontrollera filstorlek, filtyp och andra säkerhetskontroller
-                // ...
-
-                $fileNameParts = explode(".", $_FILES["files"]["name"][$i]);
-                $fileFormat = $fileNameParts[count($fileNameParts) - 1];
-                $allowedFormats = array("jpg", "jpeg", "png", "gif");
-                if (!in_array($fileFormat, $allowedFormats)) {
-                    $errors .= "Endast JPG, JPEG, PNG och GIF-filer är tillåtna<br/>";
-                    $errors .= "Filen " . $_FILES["files"]["name"][$i] . " är inte av tillåten filtyp<br/>";
-                    $uploadOk = 0;
-                } 
-                else 
+                if(uploadFile($_FILES["files"]["name"][$i], $_FILES["files"]["tmp_name"][$i], "files", $_FILES["files"]["error"][$i], $target_dir, $pdo, $_POST["articleID"], "std", $errors))
                 {
-                    // Generera ett unikt filnamn för att undvika duplicering
-                    $unique_filename = uniqid() . "." . $imageFileType;
-                    $target_file = $target_dir . $unique_filename;
+                    $uploadedFiles++;
+                }
+                else
+                {
+                    $errors .= "Kunde inte spara filen " . $_FILES["files"]["name"][$i] . "AAA <br/>";
+                }
+            }
+            $success .= $uploadedFiles . " fil(er) sparade<br/>";
+        }
+        
+        if($_FILES["risk-assessment"]["name"] != "")
+        {
+            $querystring = "SELECT FileID FROM Images WHERE ArticleID = :articleID AND Type = 'risk'";
+            $stmt = $pdo->prepare($querystring);
+            $stmt->bindParam(":articleID", $_POST["articleID"]);
+            $stmt->execute();
+            $old = $stmt->fetch();
 
-                    // Flytta filen till dess permanenta plats
-                    if (move_uploaded_file($_FILES["files"]["tmp_name"][$i], $target_file)) {
-                        // Spara information om bilden i databasen
-                        $articleID = $_POST["articleID"];
-                        $stmt = "INSERT INTO Images (Filenamez, Searchway, ArticleID) VALUES ('$unique_filename', '$target_file', '$articleID')";
-
-                        if ($pdo->exec($stmt)) {
-                            $uploadedFiles++;
-                        } 
-                        else 
-                        {
-                            $errors .= "Kunde inte spara " . $_FILES["files"]["name"][$i] . " i databasen<br/>";
-                        }
-                    } 
-                    else 
-                    { 
-                        $errors .= "Kunde inte spara " . $_FILES["files"]["name"][$i] . " på servern<br/>";
+            if(isset($old["FileID"]) && $old["FileID"] != "")
+            {
+                if(deleteFile($old["FileID"], $errors, $success, $pdo))
+                {
+                    if(uploadFile($_FILES["risk-assessment"]["name"], $_FILES["risk-assessment"]["tmp_name"], "risk-assessment", $_FILES["risk-assessment"]["error"], $target_dir, $pdo, $_POST["articleID"], "risk", $errors))
+                    {
+                        $success .= "Riskbedömning sparad<br/>";
+                    }
+                    else
+                    {
+                        $errors .= "Kunde inte spara riskbedömning<br/>";
                     }
                 }
             }
+            else
+            {
+                if(uploadFile($_FILES["risk-assessment"]["name"], $_FILES["risk-assessment"]["tmp_name"], "risk-assessment", $_FILES["risk-assessment"]["error"], $target_dir, $pdo, $_POST["articleID"], "risk", $errors))
+                {
+                    $success .= "Riskbedömning sparad<br/>";
+                }
+                else
+                {
+                    $errors .= "Kunde inte spara riskbedömning<br/>";
+                }
+            }
         }
-        $success .= $uploadedFiles . " bild(er) sparade<br/>";
+    }
+}
+
+function uploadFile($fileName, $tmp_name, $formFieldName, $error, $target_dir, $pdo, $articleID, $type, &$errors)
+{
+    $target_file = $target_dir . basename($fileName);
+    $uploadOk = 1;
+    $fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+
+    // Kontrollera om filen har laddats upp
+    if(isset($_FILES[$formFieldName]) && $error == 0)
+    {
+        // Kontrollera filstorlek, filtyp och andra säkerhetskontroller
+        // ...
+
+        $fileNameParts = explode(".", $fileName);
+        $fileFormat = $fileNameParts[count($fileNameParts) - 1];
+        $allowedFormats = array();
+        $formatType = "";
+        $allowedDocFormats = array("pdf", "docx", "doc", "odt");
+        $allowedImgFormats = array("jpg", "jpeg", "png", "gif");
+        
+        if($type == "std")
+        {
+            if(in_array($fileFormat, $allowedDocFormats))
+            {
+                $formatType = "doc";
+            }
+            else if(in_array($fileFormat, $allowedImgFormats))
+            {
+                $formatType = "img";
+            }
+            $allowedFormats = array("pdf", "docx", "doc", "odt", "jpg", "jpeg", "png", "gif");
+        }
+        else if($type == "risk")
+        {
+            $formatType = "risk";
+            $allowedFormats = array("pdf", "docx", "doc", "odt");
+        }
+
+        if (!in_array($fileFormat, $allowedFormats)) 
+        {
+            $allowedString = "";
+            for($i = 0; $i < count($allowedFormats); $i++)
+            {
+                $allowedString .= $allowedFormats[$i];
+                if($i < count($allowedFormats) - 1)
+                {
+                    $allowedString .= ", ";
+                }
+            }
+            $errors .= "Endast formaten $allowedString är tillåtna<br/>";
+            $errors .= "Filen " . $fileName . " är inte av tillåten filtyp<br/>";
+            $uploadOk = 0;
+        } 
+        else 
+        {
+            // Generera ett unikt filnamn för att undvika duplicering
+            $unique_filename = uniqid() . "." . $fileType;
+            $target_file = $target_dir . $unique_filename;
+
+            // Flytta filen till dess permanenta plats
+            if (move_uploaded_file($tmp_name, $target_file)) {
+                // Spara information om bilden i databasen
+                $stmt = "INSERT INTO Images (Filenamez, Searchway, ArticleID, Type) VALUES ('$unique_filename', '$target_file', '$articleID', '$formatType')";
+
+                if ($pdo->exec($stmt)) {
+                    return true;
+                } 
+                else 
+                {
+                    return false;
+                }
+            } 
+            else 
+            { 
+                return false;
+            }
+        }
     }
 }
 
@@ -186,43 +266,54 @@ if(isset($_POST["deleteImage"]))
 {
     foreach($_POST["deleteImage"] as $imageID)
     {
-        if($imageID != "")
+        deleteFile($imageID, $errors, $success, $pdo);
+    }
+}
+
+function deleteFile($fileID, &$errors, &$success, $pdo)
+{
+    if($fileID != "")
+    {
+        $querystring = "SELECT * FROM Images WHERE FileID = :fileID";
+        $stmt = $pdo->prepare($querystring);
+        $stmt->bindParam(":fileID", $fileID);
+
+        if($stmt->execute())
         {
-            $querystring = "SELECT * FROM Images WHERE FileID = :imageID";
-            $stmt = $pdo->prepare($querystring);
-            $stmt->bindParam(":imageID", $imageID);
-    
-            if($stmt->execute())
+            $file = $stmt->fetch();
+            if($file)
             {
-                $image = $stmt->fetch();
-                if(file_exists($image["Searchway"]))
+                if(file_exists($file["Searchway"]))
                 {
                     try{
-                        unlink($image["Searchway"]);
+                        unlink($file["Searchway"]);
                     }
                     catch(Exception $e)
                     {
-                        $errors .= "Kunde inte ta bort bilden " . $image["Filenamez"] . "<br/>";
+                        $errors .= "Kunde inte ta bort filen " . $file["Filenamez"] . "<br/>";
                     }
-                    $success .= "Bilden " . $image["Filenamez"] . " har tagits bort<br/>";
+                    $success .= "Filen " . $file["Filenamez"] . " har tagits bort<br/>";
                 }
                 else
                 {
-                    $errors .= "Kunde inte hitta bilden " . $image["Filenamez"] . "<br/>";
+                    $errors .= "Kunde inte hitta filen " . $file["Filenamez"] . "<br/>";
                 }
             }
             else
             {
-                $errors .= "Kunde inte ta bort bilden " . $image["Filenamez"] . "<br/>";
-            }        
-            $querystring = "DELETE FROM Images WHERE FileID = :imageID";
-            $stmt = $pdo->prepare($querystring);
-            $stmt->bindParam(":imageID", $imageID);
-            $stmt->execute();
+                $errors .= "Kunde inte hitta filen med ID " . $fileID . "<br/>";
+            }
         }
+        else
+        {
+            $errors .= "Kunde inte ta bort filen " . $file["Filenamez"] . "<br/>";
+        }        
+        $querystring = "DELETE FROM Images WHERE FileID = :imageID";
+        $stmt = $pdo->prepare($querystring);
+        $stmt->bindParam(":imageID", $fileID);
+        return $stmt->execute();
     }
 }
-
 
 header("Location: ../article.php?success=" . $success . "&error=" . $errors . "&articleID=" . $_POST["articleID"]);
 ?>

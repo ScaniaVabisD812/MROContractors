@@ -24,6 +24,20 @@
     $DBUsername = DB_USERNAME;
     $DBPassword = DB_PASSWORD;
     $DBName = DB_NAME;
+
+    $pdo = new PDO("mysql:host=$DBServer;dbname=$DBName", $DBUsername, $DBPassword);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+    $querystring = "INSERT INTO Log(Page, Interaction, UserID) VALUES ('7', '1', :userID);";
+    $stmt = $pdo->prepare($querystring);
+    $stmt->bindParam(":userID", $_SESSION["userID"]);
+    try{
+        $stmt->execute();
+    }
+    catch(PDOException $e)
+    {
+        
+    }
 ?>
 
 <!DOCTYPE html>
@@ -114,7 +128,6 @@
                         <input type="text" name="username" id="username" placeholder="Användarnamn">
                         <label for="association"></label>
                         <?php
-                            $pdo = new PDO("mysql:host=$DBServer;dbname=$DBName", $DBUsername, $DBPassword);
                             $querystring = "SELECT * FROM Associations ORDER BY Name ASC;";
                             $stmt = $pdo->prepare($querystring);
                             $stmt->execute();

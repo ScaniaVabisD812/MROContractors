@@ -23,10 +23,22 @@ if(isset($_POST["username"]) && isset($_POST["password"]))
     $stmt->bindParam(":password", $password);
     $stmt->execute();
     $queryResult = $stmt->fetchAll();
-    $passwordDB = $queryResult[0]["Passwordz"];
 
     if(count($queryResult) > 0)
     {
+        $passwordDB = $queryResult[0]["Passwordz"];
+
+        $querystring = "INSERT INTO Log(Page, Interaction, UserID) VALUES ('0', '0', :userID);";
+        $stmt = $pdo->prepare($querystring);
+        $stmt->bindParam(":userID", $queryResult[0]["UserID"]);
+        try{
+            $stmt->execute();
+        }
+        catch(PDOException $e)
+        {
+            
+        }
+
         $_SESSION["username"] = $queryResult[0]["Username"];
         $_SESSION["userID"] = $queryResult[0]["UserID"];
         $_SESSION["name"] = $queryResult[0]["Name"];

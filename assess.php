@@ -24,6 +24,20 @@
     $DBUsername = DB_USERNAME;
     $DBPassword = DB_PASSWORD;
     $DBName = DB_NAME;
+
+    $pdo = new PDO("mysql:host=$DBServer;dbname=$DBName", $DBUsername, $DBPassword);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+    $querystring = "INSERT INTO Log(Page, Interaction, UserID) VALUES ('5', '1', :userID);";
+    $stmt = $pdo->prepare($querystring);
+    $stmt->bindParam(":userID", $_SESSION["userID"]);
+    try{
+        $stmt->execute();
+    }
+    catch(PDOException $e)
+    {
+        
+    }
 ?>
 
 <!DOCTYPE html>
@@ -118,8 +132,6 @@
                     </thead>
                     <tbody>
                         <?php
-                            $pdo = new PDO("mysql:host=$DBServer;dbname=$DBName", $DBUsername, $DBPassword);
-                            $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
                             $querystring = "SELECT Articles.Title AS Title, Articles.FirmName AS FirmName, Users.Name AS FullName, Users.AssociationRole AS AssociationRole, Associations.Name AS AssociationName, Articles.WrittenDate AS WrittenDate, Articles.ArticleID AS ArticleID FROM Articles INNER JOIN Users ON Articles.AuthorID = Users.UserID INNER JOIN Associations ON Users.AssociationID = Associations.AssociationID WHERE Articles.Status = 0;";
                             $stmt = $pdo->prepare($querystring);
                             $stmt->execute();

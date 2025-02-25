@@ -320,7 +320,7 @@ div.loginContainer{
   position: relative;
 }
 
-.imgContainer div{
+.deleteImage{
   transition: all 0.2s;
   display: flex;
   justify-content: center;
@@ -455,7 +455,39 @@ textarea{
   transform: translateY(-50%);
 }
 
- nav{
+.fileContainer{
+  display: flex;
+  justify-content: left;
+  gap: 1em;
+  flex-wrap: wrap;
+  margin-bottom: 3em;
+}
+
+.fileButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.2em;
+  width: 12em;
+  height: 12em;
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  text-decoration: none;
+  padding: 0.5em;
+  border-radius: 1em;
+  transition: all 0.2s;
+}
+
+.file{
+  position: relative;
+}
+
+.fileButton:hover{
+  opacity: 0.6;
+}
+
+nav{
   background-color: var(--md-sys-color-surface-container);
 	grid-area: nav;
 	height: 100%;
@@ -573,3 +605,4 @@ footer{
       transform: rotate(0deg);
   }
 }
+

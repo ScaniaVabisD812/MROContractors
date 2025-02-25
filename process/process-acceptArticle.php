@@ -53,6 +53,18 @@
                 {
                     $errors = "Något gick fel... " . $e;
                 }
+
+                $querystring = "INSERT INTO Log(Interaction, UserID, ObjType, ObjVal) VALUES ('2', :userID, 'Article', :articleID);";
+                $stmt = $pdo->prepare($querystring);
+                $stmt->bindParam(":userID", $_SESSION["userID"]);
+                $stmt->bindParam(":articleID", $_GET["articleID"]);
+                try{
+                    $stmt->execute();
+                }
+                catch(PDOException $e)
+                {
+                    
+                }
             }
         }
         else

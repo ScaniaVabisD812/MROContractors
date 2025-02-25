@@ -24,6 +24,17 @@
 
     $pdo = new PDO("mysql:host=$DBServer;dbname=$DBName", $DBUsername, $DBPassword);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+    $querystring = "INSERT INTO Log(Page, Interaction, UserID) VALUES ('4', '1', :userID);";
+    $stmt = $pdo->prepare($querystring);
+    $stmt->bindParam(":userID", $_SESSION["userID"]);
+    try{
+        $stmt->execute();
+    }
+    catch(PDOException $e)
+    {
+        
+    }
 ?>
 
 <!DOCTYPE html>

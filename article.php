@@ -52,6 +52,18 @@
     {
         Header("Location: articles.php");
     }
+
+    $querystring = "INSERT INTO Log(Page, Interaction, UserID, ObjType, ObjVal) VALUES ('3', '1', :userID, 'Article', :articleID);";
+    $stmt = $pdo->prepare($querystring);
+    $stmt->bindParam(":userID", $_SESSION["userID"]);
+    $stmt->bindParam(":articleID", $_GET["articleID"]);
+    try{
+        $stmt->execute();
+    }
+    catch(PDOException $e)
+    {
+        
+    }
 ?>
 
 <!DOCTYPE html>
@@ -240,7 +252,7 @@
                 echo("<h2>" . $articles[0]["Title"] . "</h2>");
 
                 $parentCategories = (getParentCategories($categories, $articles[0]["CategoryID"], array(), $pdo));
-                echo("<h3 class='categoryHeader'>");
+                echo("<h3 class='categoryHeader'>Kategori: ");
                 for($i = count($parentCategories) - 1; $i >= 0; $i--)
                 {
                     echo(getCategoryName($categories, $parentCategories[$i]));
@@ -282,18 +294,50 @@
                     echo("<p>" . $articles[0]["Cost"] . "</p>");
                 }
 
-                $querystring = "SELECT FileID, Filenamez FROM Images WHERE ArticleID = :articleID;";
+                $querystring = "SELECT FileID, Filenamez, Type FROM Images WHERE ArticleID = :articleID;";
                 $stmt = $pdo->prepare($querystring);
                 $stmt->bindParam(":articleID", $_GET["articleID"]);
                 $stmt->execute();
-                $images = $stmt->fetchAll();
+                $files = $stmt->fetchAll();
+            ?>
 
+            <h3>Bilder</h3>
+
+            <?php
                 echo("<div class='imageContainer'>");
-                $num = 0;
-                foreach($images as $image)
+                $num = 1;
+                foreach($files as $file)
                 {
-                    echo("<a target='_blank' href='fullPic.php?image=" . $image["Filenamez"] ."'><img src='process/process-fetchImage.php?image=" . $image["Filenamez"] . "' alt='Bild " . $num . "'></a>");
+                    if($file["Type"] == "img")
+                    {
+                        echo("<a target='_blank' href='fullPic.php?image=" . $file["Filenamez"] ."'><img src='process/process-fetchImage.php?image=" . $file["Filenamez"] . "' alt='Bild " . $num . "'></a>");
+                        $num++;
+                    }
                 }
+                echo("</div>");
+            ?>
+
+            <h3>Dokument</h3>
+
+            <?php
+                echo("<div class='fileContainer'>");
+                foreach($files as $file)
+                {
+                    if($file["Type"] == "risk")
+                    {
+                        echo("<a class='fileButton' href='document.php?document=" . $file["Filenamez"] . "'><span class='material-symbols-outlined'>description</span><span>Riskbedömning</span></a>");
+                    }
+                }
+                $num = 1;
+                foreach($files as $file)
+                {
+                    if($file["Type"] == "doc")
+                    {
+                        echo("<a class='fileButton' href='document.php?document=" . $file["Filenamez"] . "'><span class='material-symbols-outlined'>description</span><span>Dokument $num</span></a>");
+                        $num++;
+                    }
+                }
+
                 echo("</div>");
             ?>
         </div>

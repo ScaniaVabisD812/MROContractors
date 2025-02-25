@@ -12,6 +12,25 @@
         header("Location: changePassword.php");
         die();
     }
+
+    require_once '../../httpd.private/config.php';
+
+    $DBServer = DB_SERVER;
+    $DBUsername = DB_USERNAME;
+    $DBPassword = DB_PASSWORD;
+    $DBName = DB_NAME;
+    
+    $pdo = new PDO("mysql:host=$DBServer;dbname=$DBName", $DBUsername, $DBPassword);
+    $querystring = "INSERT INTO Log(Page, Interaction, UserID) VALUES ('1', '1', :userID);";
+    $stmt = $pdo->prepare($querystring);
+    $stmt->bindParam(":userID", $_SESSION["userID"]);
+    try{
+        $stmt->execute();
+    }
+    catch(PDOException $e)
+    {
+        
+    }
 ?>
 
 <!DOCTYPE html>
@@ -82,6 +101,18 @@
             <div class="container primaryContainer">
                 <h2>Välkommen!</h2>
                 <div>Detta är ett försök att underlätta för varandra att dela med sig av erfarenheter av externa firmor.</div>
+                <h3>Version 1.1</h3>
+                <h4>1.1.0</h4>
+                <p>Uppdaterat 2025-02-24.</p>
+                <p>Ändringar:</p>
+                <ul>
+                    <li>Stöd för riskbedömning</li>
+                    <li>Stöd för dokument</li>
+                    <li>Korrigerat footer</li>
+                </ul>
+                <h3>Version 1.0</h3>
+                <h4>1.0.1</h4>
+                <p>Den version som uppvisades under konferensen i Mjölby 2025-01-26.</p>
             </div>
         </main>
         <footer>
