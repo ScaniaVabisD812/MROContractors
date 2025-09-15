@@ -96,7 +96,7 @@
                         echo("<li><a href='associations.php'><div class='material-symbols-outlined menuIcon'>group</div><div>Föreningar</div></a></li>");
                         echo("<li><a href='users.php'><div class='material-symbols-outlined menuIcon'>person_edit</div><div>Användare</div></a></li>");
                         echo("<li><a href='createUser.php'><div class='material-symbols-outlined menuIcon'>person_add</div><div>Skapa användare</div></a></li>");
-                        echo("<li><a href=''><div class='material-symbols-outlined menuIcon'>history</div><div>Historik</div></a></li>");
+                        echo("<li><a href='log.php'><div class='material-symbols-outlined menuIcon'>history</div><div>Historik</div></a></li>");
                     }
                 ?>
             </ul>
@@ -209,6 +209,31 @@
                                 echo '<input type="text" name="author" id="author" placeholder="...">';
                             }
                         ?>
+                        <label for="association">Förening</label>
+                        <select name="association" id="association" required>
+                        <?php
+                            $pdo = new PDO("mysql:host=$DBServer;dbname=$DBName", $DBUsername, $DBPassword);
+                            $querystring = "SELECT * FROM Associations ORDER BY Name ASC;";
+                            $stmt = $pdo->prepare($querystring);
+                            $stmt->execute();
+                            $queryResult = $stmt->fetchAll();
+                            
+                            if(isset($_GET["association"]) && $_GET["association"] != "")
+                            {
+                                echo('<option value="' . $_GET["association"] . '">' . $_GET["association"] . '</option>');
+                                echo('<option value="">Alla föreningar</option>');
+                            }
+                            else
+                            {
+                                echo('<option value="" disabled selected>Välj förening</option>');
+                            }
+
+                            foreach($queryResult as $row)
+                            {
+                                echo("<option value='" . $row["Name"] . "'>" . $row["Name"] . "</option>");
+                            }
+                        ?>
+                    </select>
 
                         <input type="hidden" name="formUsed" value="articles.php">
                         <a href="articles.php" class="button primaryContainer">Rensa filter</a>
@@ -274,6 +299,11 @@
                         $querystringStart .= " AND U.Name LIKE :author";
                         $params[':author'] = '%' . $_GET["author"] . '%';
                     }
+                    if(isset($_GET["association"]) && $_GET["association"] != "") 
+                    {
+                        $querystringStart .= " AND S.Name LIKE :association";
+                        $params[':association'] = '%' . $_GET["association"] . '%';
+                    }
 
                     $querystring = $querystringStart . $querystringEnd . "ORDER BY Articles.WrittenDate LIMIT 20;";
 
@@ -316,25 +346,53 @@
                     {
                         $getString .= "author=" . $_GET["author"] . "&";
                     }
-                    $color = "primaryContainer";
-                    foreach($articles as $article)
+                    if(isset($_GET["association"]))
                     {
-                        //Title, FirmName, WrittenDate, Name, AssociationName
-                        //echo("<a href='article.php?articleID=" . $article["ArticleID"] . "&from=myArticles.php&" . $getString ."' class='articleContainer " . $color . "'>");
-                        echo("<a href='article.php?articleID=" . $article["ArticleID"] . "&from=articles.php&" . $getString . "' class='articleContainer " . $color . "'>");
-                        echo("<h3>" . $article["Title"] . "</h3>");
-                        echo("<div class='articleDetailsContainer'>");
-                        echo("<div>" . $article["FirmName"] . "</div>");
-                        echo("<div>" . $article["WrittenDate"] . "</div>");
-                        echo("<div>" . $article["UserName"] . "</div>");
-                        echo("<div>" . $article["AssociationName"] . "</div>");
-                        echo("</div>");
-                        echo("<span class='openArticle material-symbols-filled'>arrow_forward</span>");
-                        echo("</a>");
-
-                        $color = ($color == "primaryContainer") ? "secondaryContainer" : "primaryContainer";
+                        $getString .= "association=" . $_GET["association"] . "&";
                     }
+                    // $color = "primaryContainer";
+                    // foreach($articles as $article)
+                    // {
+                    //     //Title, FirmName, WrittenDate, Name, AssociationName
+                    //     //echo("<a href='article.php?articleID=" . $article["ArticleID"] . "&from=myArticles.php&" . $getString ."' class='articleContainer " . $color . "'>");
+                    //     echo("<a href='article.php?articleID=" . $article["ArticleID"] . "&from=articles.php&" . $getString . "' class='articleContainer " . $color . "'>");
+                    //     echo("<h3>" . $article["Title"] . "</h3>");
+                    //     echo("<div class='articleDetailsContainer'>");
+                    //     echo("<div>" . $article["FirmName"] . "</div>");
+                    //     echo("<div>" . $article["WrittenDate"] . "</div>");
+                    //     echo("<div>" . $article["UserName"] . "</div>");
+                    //     echo("<div>" . $article["AssociationName"] . "</div>");
+                    //     echo("</div>");
+                    //     echo("<span class='openArticle material-symbols-filled'>arrow_forward</span>");
+                    //     echo("</a>");
+
+                    //     $color = ($color == "primaryContainer") ? "secondaryContainer" : "primaryContainer";
+                    // }
                 ?>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rubrik</th>
+                            <th>Firma</th>
+                            <th>Skriven av</th>
+                            <th>Datum</th>
+                            <th>Läs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            foreach($articles as $article)
+                            {
+                                echo("<tr>");
+                                echo("<td>" . $article["Title"] . "</td>");
+                                echo("<td>" . $article["FirmName"] . "</td>");
+                                echo('<td><a href="?author=' . $article["UserName"] . '&' . $getString . 'formUsed=articles.php">' . $article["UserName"] . '</a><br/><a href="?association=' . $article["AssociationName"] . '&' . $getString . 'formUsed=articles.php">' . $article["AssociationName"] . '</a></td>');
+                                echo("<td>" . $article["WrittenDate"] . "</td>");
+                                echo('<td><div class="materialButton"><a href="article.php?articleID=' . $article["ArticleID"] . '&from=articles.php&' . $getString . '"><span class="material-symbols-outlined">arrow_forward</span></a></div></td>');
+                                echo("</tr>");
+                            }
+                        ?>
+                </table>
             </div>
         </main>
         <footer>

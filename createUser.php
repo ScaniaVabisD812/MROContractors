@@ -85,7 +85,7 @@
                         echo("<li><a href='associations.php'><div class='material-symbols-outlined menuIcon'>group</div><div>Föreningar</div></a></li>");
                         echo("<li><a href='users.php'><div class='material-symbols-outlined menuIcon'>person_edit</div><div>Användare</div></a></li>");
                         echo("<li><a href='createUser.php'><div class='material-symbols-filled menuIcon'>person_add</div><div>Skapa användare</div></a></li>");
-                        echo("<li><a href=''><div class='material-symbols-outlined menuIcon'>history</div><div>Historik</div></a></li>");
+                        echo("<li><a href='log.php'><div class='material-symbols-outlined menuIcon'>history</div><div>Historik</div></a></li>");
                     }
                 ?>
             </ul>

@@ -92,7 +92,7 @@
                         echo("<li><a href='associations.php'><div class='material-symbols-outlined menuIcon'>group</div><div>Föreningar</div></a></li>");
                         echo("<li><a href='users.php'><div class='material-symbols-outlined menuIcon'>person_edit</div><div>Användare</div></a></li>");
                         echo("<li><a href='createUser.php'><div class='material-symbols-outlined menuIcon'>person_add</div><div>Skapa användare</div></a></li>");
-                        echo("<li><a href=''><div class='material-symbols-outlined menuIcon'>history</div><div>Historik</div></a></li>");
+                        echo("<li><a href='log.php'><div class='material-symbols-outlined menuIcon'>history</div><div>Historik</div></a></li>");
                     }
                 ?>
             </ul>
@@ -102,6 +102,13 @@
                 <h2>Välkommen!</h2>
                 <div>Detta är ett försök att underlätta för varandra att dela med sig av erfarenheter av externa firmor.</div>
                 <h3>Version 1.1</h3>
+                <h4>1.1.1</h4>
+                <p>Uppdaterat 2025-09-15.</p>
+                <p>Ändringar:</p>
+                <ul>
+                    <li>Nytt utseende för listan på sidan "Artiklar"</li>
+                    <li>Stöd för filtrering av artiklar genom föreningstillhörighet</li>
+                </ul>
                 <h4>1.1.0</h4>
                 <p>Uppdaterat 2025-02-24.</p>
                 <p>Ändringar:</p>
