@@ -95,9 +95,6 @@ Attachments can be added or removed:
 ---
 
 ## 🛠 Development & Future Improvements
-
-Bug reports and suggestions are welcome at **info@museibanorna.se**.
-
 ### Planned features (as of 2025‑02‑26)
 
 | Feature | Size | Priority | Status |
