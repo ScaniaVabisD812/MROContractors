@@ -17,21 +17,6 @@ The Supplier Database enables:
 
 All participating organizations share the responsibility of keeping the database up to date.
 
----
-
-## 🔐 Login
-
-The system is available at:
-
-**https://museibanorna.se/leverantordb/**
-
-Login credentials are provided by MRO administrators via **info@museibanorna.se**.  
-On first login, users must set a unique password (stored hashed in the database).
-
-> Note: The interface is optimized for desktop screens. Mobile use may be difficult.
-
----
-
 ## 🧭 Navigation
 
 The left‑side navigation menu provides access to the system’s pages. Available options depend on user permissions.
